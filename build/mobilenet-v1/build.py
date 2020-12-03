@@ -26,7 +26,8 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import finn.util.build_dataflow as build
+import finn.builder.build_dataflow as build
+import finn.builder.build_dataflow_config as build_config
 
 # custom steps for mobilenetv1
 from custom_steps import (
@@ -36,8 +37,8 @@ from custom_steps import (
 )
 
 model_name = "mobilenetv1-w4a4"
-board = "U250"
-synth_clk_period_ns = 3.0
+board = "ZCU104"
+synth_clk_period_ns = 5.0
 
 mobilenet_build_steps = [
     step_mobilenet_streamline,
@@ -45,30 +46,33 @@ mobilenet_build_steps = [
     step_mobilenet_convert_to_hls_layers,
     "step_create_dataflow_partition",
     "step_apply_folding_config",
+    "step_generate_estimate_reports",
     "step_hls_ipgen",
     "step_set_fifo_depths",
     "step_create_stitched_ip",
-    "step_make_pynq_driver",
-    "step_synthesize_bitfile",
+    # "step_make_pynq_driver",
+    "step_out_of_context_synthesis",
+    # "step_synthesize_bitfile",
+    # "step_deployment_package",
 ]
 
-cfg = build.DataflowBuildConfig(
+cfg = build_config.DataflowBuildConfig(
     steps=mobilenet_build_steps,
     output_dir="output_%s_%s" % (model_name, board),
     folding_config_file="folding_config/%s_folding_config.json" % board,
     synth_clk_period_ns=synth_clk_period_ns,
     board=board,
-    shell_flow_type=build.ShellFlowType.VITIS_ALVEO,
+    shell_flow_type=build_config.ShellFlowType.VIVADO_ZYNQ,
     # folding config comes with FIFO depths already
     auto_fifo_depths=False,
     # use URAM for large FIFOs
-    large_fifo_mem_style=build.LargeFIFOMemStyle.URAM,
+    large_fifo_mem_style=build_config.LargeFIFOMemStyle.URAM,
     # enable extra performance optimizations (physopt)
-    vitis_opt_strategy=build.VitisOptStrategyCfg.PERFORMANCE_BEST,
+    vitis_opt_strategy=build_config.VitisOptStrategyCfg.PERFORMANCE_BEST,
     generate_outputs=[
-        build.DataflowOutputType.PYNQ_DRIVER,
-        build.DataflowOutputType.STITCHED_IP,
-        build.DataflowOutputType.BITFILE,
+        build_config.DataflowOutputType.STITCHED_IP,
+        build_config.DataflowOutputType.ESTIMATE_REPORTS,
+        build_config.DataflowOutputType.OOC_SYNTH,
     ],
 )
 model_file = "models/%s_pre_post_tidy.onnx" % model_name
