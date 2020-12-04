@@ -51,8 +51,8 @@ mobilenet_build_steps = [
     "step_set_fifo_depths",
     "step_create_stitched_ip",
     # "step_make_pynq_driver",
-    "step_out_of_context_synthesis",
-    # "step_synthesize_bitfile",
+    # "step_out_of_context_synthesis",
+    "step_synthesize_bitfile",
     # "step_deployment_package",
 ]
 
@@ -72,7 +72,8 @@ cfg = build_config.DataflowBuildConfig(
     generate_outputs=[
         build_config.DataflowOutputType.STITCHED_IP,
         build_config.DataflowOutputType.ESTIMATE_REPORTS,
-        build_config.DataflowOutputType.OOC_SYNTH,
+        build_config.DataflowOutputType.BITFILE,
+        # build_config.DataflowOutputType.OOC_SYNTH,
     ],
 )
 model_file = "models/%s_pre_post_tidy.onnx" % model_name
