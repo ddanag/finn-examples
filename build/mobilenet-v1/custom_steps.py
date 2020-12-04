@@ -78,6 +78,7 @@ def step_mobilenet_lower_convs(model: ModelWrapper, cfg: DataflowBuildConfig):
     model = model.transform(GiveReadableTensorNames())
     model = model.transform(InferDataTypes())
     model = model.transform(RoundAndClipThresholds())
+    model = model.transform(InferDataLayouts())
     return model
 
 
