@@ -86,6 +86,7 @@ def step_mobilenet_convert_to_hls_layers(model: ModelWrapper, cfg: DataflowBuild
     mem_mode = cfg.default_mem_mode.value
     model = model.transform(to_hls.InferPool_Batch())
     model = model.transform(to_hls.InferConvInpGen())
+    model = model.transform(to_hls.InferThresholdingLayer())
     model = model.transform(to_hls.InferVVAU())
     model = model.transform(to_hls.InferQuantizedStreamingFCLayer(mem_mode))
     model = model.transform(to_hls.InferChannelwiseLinearLayer())
