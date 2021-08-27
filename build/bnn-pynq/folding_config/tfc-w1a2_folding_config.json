@@ -12,12 +12,12 @@
   "StreamingFCLayer_Batch_1": {
     "PE": 8,
     "SIMD": 8,
-    "ram_style": "auto"
+    "ram_style": "block"
   },
   "StreamingFCLayer_Batch_2": {
     "PE": 8,
     "SIMD": 8,
-    "ram_style": "auto"
+    "ram_style": "block"
   },
   "StreamingFCLayer_Batch_3": {
     "PE": 10,

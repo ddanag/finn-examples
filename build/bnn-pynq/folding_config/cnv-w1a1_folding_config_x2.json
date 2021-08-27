@@ -9,68 +9,100 @@
     "ram_style": "block"
   },
   "StreamingFCLayer_Batch_0": {
-    "PE": 8,
+    "PE": 32,
     "SIMD": 3,
     "ram_style": "auto"
   },
+  "Thresholding_Batch_1": {
+    "PE": 2,
+    "ram_style": "distributed"
+  },
   "ConvolutionInputGenerator_1": {
-    "SIMD": 16,
+    "SIMD": 64,
     "ram_style": "block"
   },
   "StreamingFCLayer_Batch_1": {
-    "PE": 16,
-    "SIMD": 16,
+    "PE": 64,
+    "SIMD": 64,
     "ram_style": "auto"
   },
+  "Thresholding_Batch_2": {
+    "PE": 2,
+    "ram_style": "distributed"
+  },
   "ConvolutionInputGenerator_2": {
-    "SIMD": 16,
+    "SIMD": 64,
     "ram_style": "block"
   },
   "StreamingFCLayer_Batch_2": {
-    "PE": 8,
-    "SIMD": 16,
+    "PE": 32,
+    "SIMD": 64,
     "ram_style": "auto"
   },
+  "Thresholding_Batch_3": {
+    "PE": 2,
+    "ram_style": "distributed"
+  },
   "ConvolutionInputGenerator_3": {
-    "SIMD": 16,
+    "SIMD": 64,
     "ram_style": "block"
   },
   "StreamingFCLayer_Batch_3": {
-    "PE": 8,
-    "SIMD": 16,
+    "PE": 32,
+    "SIMD": 64,
     "ram_style": "auto"
   },
+  "Thresholding_Batch_4": {
+    "PE": 2,
+    "ram_style": "distributed"
+  },
   "ConvolutionInputGenerator_4": {
-    "SIMD": 8,
+    "SIMD": 64,
     "ram_style": "block"
   },
   "StreamingFCLayer_Batch_4": {
-    "PE": 4,
-    "SIMD": 8,
+    "PE": 8,
+    "SIMD": 64,
     "ram_style": "auto"
   },
+  "Thresholding_Batch_5": {
+    "PE": 2,
+    "ram_style": "distributed"
+  },
   "ConvolutionInputGenerator_5": {
-    "SIMD": 8,
+    "SIMD": 64,
     "ram_style": "block"
   },
   "StreamingFCLayer_Batch_5": {
-    "PE": 1,
+    "PE": 2,
+    "SIMD": 64,
+    "ram_style": "auto"
+  },
+  "Thresholding_Batch_6": {
+    "PE": 2,
+    "ram_style": "distributed"
+  },
+  "StreamingFCLayer_Batch_6": {
+    "PE": 2,
     "SIMD": 8,
     "ram_style": "auto"
   },
-  "StreamingFCLayer_Batch_6": {
-    "PE": 1,
-    "SIMD": 2,
-    "ram_style": "auto"
+  "Thresholding_Batch_7": {
+    "PE": 2,
+    "ram_style": "distributed"
   },
   "StreamingFCLayer_Batch_7": {
     "PE": 2,
-    "SIMD": 2,
+    "SIMD": 16,
     "ram_style": "auto"
   },
+  "Thresholding_Batch_8": {
+    "PE": 2,
+    "ram_style": "distributed"
+  },
   "StreamingFCLayer_Batch_8": {
-    "PE": 5,
-    "SIMD": 1,
+    "PE": 10,
+    "SIMD": 2,
     "ram_style": "auto"
   },
   "LabelSelect_Batch_0": {

@@ -8,16 +8,17 @@ import shutil
 # the BNN-PYNQ models -- these all come as exported .onnx models
 # see models/download_bnn_pynq_models.sh
 models = [
-    "tfc-w1a1",
-    "tfc-w1a2",
-    "tfc-w2a2",
+    #"tfc-w1a1",
+    #"tfc-w1a2",
+    #"tfc-w2a2",
     "cnv-w1a1",
-    "cnv-w1a2",
-    "cnv-w2a2",
+    #"cnv-w1a2",
+    #"cnv-w2a2",
 ]
 
 # which platforms to build the networks for
-zynq_platforms = ["Pynq-Z1", "Ultra96", "ZCU104"]
+#zynq_platforms = ["Pynq-Z1", "Ultra96", "ZCU104"]
+zynq_platforms = []
 alveo_platforms = ["U250"]
 platforms_to_build = zynq_platforms + alveo_platforms
 
@@ -54,12 +55,42 @@ for platform_name in platforms_to_build:
         cfg = build_cfg.DataflowBuildConfig(
             output_dir="output_%s_%s" % (model_name, release_platform_name),
             folding_config_file="folding_config/%s_folding_config.json" % model_name,
-            synth_clk_period_ns=10.0,
+            synth_clk_period_ns=5.0,
             board=platform_name,
             shell_flow_type=shell_flow_type,
             vitis_platform=vitis_platform,
-            generate_outputs=[build_cfg.DataflowOutputType.BITFILE],
+            generate_outputs=[build_cfg.DataflowOutputType.ESTIMATE_REPORTS, build_cfg.DataflowOutputType.BITFILE],
             save_intermediate_models=True,
+            standalone_thresholds=True,
+            default_mem_mode=build_cfg.ComputeEngineMemMode.DECOUPLED,
+            steps=[
+                "step_tidy_up",
+                "step_streamline",
+                "step_convert_to_hls",
+                "step_create_dataflow_partition",
+                "step_target_fps_parallelization",
+                "step_apply_folding_config",
+                "step_generate_estimate_reports",
+                #"step_hls_codegen",
+                #"step_hls_ipgen",
+                #"step_set_fifo_depths",
+                #"step_create_stitched_ip",
+                #"step_measure_rtlsim_performance",
+                #"step_out_of_context_synthesis",
+                #"step_synthesize_bitfile",
+                #"step_make_pynq_driver",
+                #"step_deployment_package",
+            ],
+        
+            #steps=[
+            #    "step_tidy_up",
+            #    "step_streamline",
+            #    "step_convert_to_hls",
+            #    "step_create_dataflow_partition",
+            #    "step_target_fps_parallelization",
+            #    "step_apply_folding_config",
+            #    "step_generate_estimate_reports",
+            #]
         )
         model_file = "models/%s.onnx" % model_name
         # launch FINN compiler to build

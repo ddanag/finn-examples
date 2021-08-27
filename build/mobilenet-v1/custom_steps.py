@@ -84,6 +84,9 @@ def step_mobilenet_lower_convs(model: ModelWrapper, cfg: DataflowBuildConfig):
 
 def step_mobilenet_convert_to_hls_layers(model: ModelWrapper, cfg: DataflowBuildConfig):
     mem_mode = cfg.default_mem_mode.value
+    if cfg.standalone_thresholds:
+        # doing this first causes all threshold layers to be standalone
+        model = model.transform(to_hls.InferThresholdingLayer())
     model = model.transform(to_hls.InferPool_Batch())
     model = model.transform(to_hls.InferConvInpGen())
     model = model.transform(to_hls.InferVVAU())

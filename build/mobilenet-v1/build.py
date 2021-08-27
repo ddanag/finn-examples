@@ -39,7 +39,7 @@ from custom_steps import (
 model_name = "mobilenetv1-w4a4"
 board = "U250"
 vitis_platform = "xilinx_u250_xdma_201830_2"
-synth_clk_period_ns = 3.0
+synth_clk_period_ns = 5.0
 
 mobilenet_build_steps = [
     step_mobilenet_streamline,
@@ -48,14 +48,14 @@ mobilenet_build_steps = [
     "step_create_dataflow_partition",
     "step_apply_folding_config",
     "step_generate_estimate_reports",
-    "step_hls_ipgen",
-    "step_set_fifo_depths",
-    "step_create_stitched_ip",
-    "step_make_pynq_driver",
-    "step_synthesize_bitfile",
-    "step_deployment_package",
+    #"step_hls_codegen",
+    #"step_hls_ipgen",
+    #"step_set_fifo_depths",
+    #"step_create_stitched_ip",
+    #"step_synthesize_bitfile",
+    #"step_make_pynq_driver",
+    #"step_deployment_package",
 ]
-
 
 cfg = build_cfg.DataflowBuildConfig(
     steps=mobilenet_build_steps,
@@ -70,11 +70,13 @@ cfg = build_cfg.DataflowBuildConfig(
     # enable extra performance optimizations (physopt)
     vitis_opt_strategy=build_cfg.VitisOptStrategyCfg.PERFORMANCE_BEST,
     generate_outputs=[
-        build_cfg.DataflowOutputType.PYNQ_DRIVER,
+        #build_cfg.DataflowOutputType.PYNQ_DRIVER,
         build_cfg.DataflowOutputType.ESTIMATE_REPORTS,
         build_cfg.DataflowOutputType.BITFILE,
-        build_cfg.DataflowOutputType.DEPLOYMENT_PACKAGE,
+        #build_cfg.DataflowOutputType.DEPLOYMENT_PACKAGE,
     ],
+    standalone_thresholds=True,
+    default_mem_mode=build_cfg.ComputeEngineMemMode.DECOUPLED,
 )
 model_file = "models/%s_pre_post_tidy.onnx" % model_name
 build.build_dataflow_cfg(model_file, cfg)
