@@ -1,26 +1,40 @@
-#  Copyright (C) 2020 Xilinx, Inc
+# Copyright (c) 2020-2023 Xilinx, Inc.
+# All rights reserved.
 #
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+# * Redistributions of source code must retain the above copyright notice, this
+#   list of conditions and the following disclaimer.
 #
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+#
+# * Neither the name of Xilinx nor the names of its
+#   contributors may be used to endorse or promote products derived from
+#   this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from setuptools import find_packages, setup
 
 import os
 import zipfile
 from distutils.command.build import build as dist_build
-from pynq.utils import build_py as _build_py
+from pynqutils.setup_utils import build_py as _build_py
 
 __author__ = "Yaman Umuroglu"
-__copyright__ = "Copyright 2020, Xilinx"
+__copyright__ = "Copyright 2020-2021, Xilinx"
 __email__ = "yamanu@xilinx.com"
 
 
@@ -86,11 +100,12 @@ with open("README.md", encoding="utf-8") as fh:
     readme_lines = fh.readlines()[4:]
 long_description = "".join(readme_lines)
 extend_package(os.path.join(module_name, "bitfiles"))
+extend_package(os.path.join(module_name, "data"))
 extend_package(os.path.join(module_name, "notebooks"))
 
 setup(
     name=module_name,
-    version="0.0.1b",
+    use_scm_version=True,
     description="FINN Examples on PYNQ for Zynq and Alveo",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -105,11 +120,12 @@ setup(
     python_requires=">=3.5.2",
     # keeping 'setup_requires' only for readability - relying on
     # pyproject.toml and PEP 517/518
-    setup_requires=["pynq>=2.5.1"],
+    setup_requires=["pynq>=2.5.1", "setuptools_scm"],
     install_requires=[
         "pynq>=2.5.1",
-        "finn-base==0.0.1b0",
-        "finn-dataset_loading==0.0.4",  # noqa
+        "bitstring>=3.1.7",
+        "numpy",
+        "finn-dataset_loading==0.0.5",  # noqa
     ],
     extras_require={
         ':python_version<"3.6"': ["matplotlib<3.1", "ipython==7.9"],

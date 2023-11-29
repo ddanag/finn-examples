@@ -32,7 +32,7 @@
 REPO_URL=https://github.com/ddanag/finn.git
 # commit hash for repo
 REPO_COMMIT=5d24cd8e88995665afa6f5acee117c721951faa6
-#REPO_COMMIT=4fee6ffd8e13f91314ec9086e9ce9b2ea9de15c7
+#REPO_COMMIT=cdc5ec4b0dde59d5d8de0a5359aae529816376af
 # directory (under the same folder as this script) to clone to
 REPO_DIR=finn
 
