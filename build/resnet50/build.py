@@ -35,7 +35,7 @@ import os
 from custom_steps import (
     step_resnet50_tidy,
     step_resnet50_streamline,
-    step_resnet50_convert_to_hls,
+    step_resnet50_convert_to_hw,
     step_resnet50_set_fifo_depths,
     step_resnet50_slr_floorplan
 )
@@ -49,12 +49,12 @@ target_fps = 300
 resnet50_build_steps = [
     step_resnet50_tidy,
     step_resnet50_streamline,
-    step_resnet50_convert_to_hls,
+    step_resnet50_convert_to_hw,
     "step_create_dataflow_partition",
     "step_apply_folding_config",
     "step_generate_estimate_reports",
-    "step_hls_codegen",
-    "step_hls_ipgen",
+    "step_hw_codegen",
+    "step_hw_ipgen",
     step_resnet50_set_fifo_depths,
     step_resnet50_slr_floorplan,
     "step_synthesize_bitfile",

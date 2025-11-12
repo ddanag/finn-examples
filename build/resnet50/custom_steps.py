@@ -87,7 +87,7 @@ from qonnx.transformation.infer_shapes import InferShapes
 from qonnx.transformation.infer_datatypes import InferDataTypes
 from qonnx.transformation.infer_data_layouts import InferDataLayouts
 from qonnx.transformation.insert_topk import InsertTopK
-import finn.transformation.fpgadataflow.convert_to_hls_layers as to_hls
+import finn.transformation.fpgadataflow.convert_to_hw_layers as to_hw
 from qonnx.transformation.lower_convs_to_matmul import LowerConvsToMatMul
 
 from finn.builder.build_dataflow_config import (
@@ -189,7 +189,7 @@ def step_resnet50_streamline(model: ModelWrapper, cfg: DataflowBuildConfig):
     return model
 
 
-def step_resnet50_convert_to_hls(model: ModelWrapper, cfg: DataflowBuildConfig):
+def step_resnet50_convert_to_hw(model: ModelWrapper, cfg: DataflowBuildConfig):
     model.set_tensor_datatype(model.graph.input[0].name, DataType["UINT8"])
     model = model.transform(InferDataLayouts())
 
@@ -206,21 +206,21 @@ def step_resnet50_convert_to_hls(model: ModelWrapper, cfg: DataflowBuildConfig):
     model = model.transform(InferDataTypes())
     model = model.transform(SortGraph())
 
-    to_hls_transformations = [
-        to_hls.InferAddStreamsLayer,
+    to_hw_transformations = [
+        to_hw.InferAddStreamsLayer,
         LowerConvsToMatMul,
-        to_hls.InferChannelwiseLinearLayer,
-        to_hls.InferPool_Batch,
+        to_hw.InferChannelwiseLinearLayer,
+        to_hw.InferPool_Batch,
         AbsorbTransposeIntoMultiThreshold,
         RoundAndClipThresholds,
-        to_hls.InferQuantizedMatrixVectorActivation,
-        to_hls.InferThresholdingLayer,
+        to_hw.InferQuantizedMatrixVectorActivation,
+        to_hw.InferThresholdingLayer,
         AbsorbConsecutiveTransposes,
-        to_hls.InferConvInpGen,
-        to_hls.InferDuplicateStreamsLayer,
-        to_hls.InferLabelSelectLayer,
+        to_hw.InferConvInpGen,
+        to_hw.InferDuplicateStreamsLayer,
+        to_hw.InferLabelSelectLayer,
     ]
-    for trn in to_hls_transformations:
+    for trn in to_hw_transformations:
         model = model.transform(trn())
         model = model.transform(InferDataLayouts())
         model = model.transform(GiveUniqueNodeNames())
