@@ -1,5 +1,6 @@
 #!/bin/bash
-# Copyright (c) 2020, Xilinx
+# Copyright (C) 2020-2022, Xilinx
+# Copyright (C) 2022-2024, Advanced Micro Devices, Inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -31,8 +32,7 @@
 #REPO_URL=https://github.com/Xilinx/finn
 REPO_URL=https://github.com/ddanag/finn.git
 # commit hash for repo
-REPO_COMMIT=9370f055ea628ae754133adc76cb3b06f4c7cf3b
-#REPO_COMMIT=cdc5ec4b0dde59d5d8de0a5359aae529816376af
+REPO_COMMIT=274785308d563cf2c8d899023b3b098cf430f4bf
 # directory (under the same folder as this script) to clone to
 REPO_DIR=finn
 

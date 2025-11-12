@@ -1,3 +1,31 @@
+# Copyright (C) 2024, Advanced Micro Devices, Inc.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice, this
+#   list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+#
+# * Neither the name of FINN nor the names of its
+#   contributors may be used to endorse or promote products derived from
+#   this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 import finn.builder.build_dataflow as build
 import finn.builder.build_dataflow_config as build_cfg
 from finn.util.basic import alveo_default_platform
@@ -61,36 +89,9 @@ for platform_name in platforms_to_build:
             vitis_platform=vitis_platform,
             generate_outputs=[build_cfg.DataflowOutputType.ESTIMATE_REPORTS, build_cfg.DataflowOutputType.BITFILE],
             save_intermediate_models=True,
-            standalone_thresholds=True,
-            default_mem_mode=build_cfg.ComputeEngineMemMode.DECOUPLED,
-            steps=[
-                "step_tidy_up",
-                "step_streamline",
-                "step_convert_to_hls",
-                "step_create_dataflow_partition",
-                "step_target_fps_parallelization",
-                "step_apply_folding_config",
-                "step_generate_estimate_reports",
-                #"step_hls_codegen",
-                #"step_hls_ipgen",
-                #"step_set_fifo_depths",
-                #"step_create_stitched_ip",
-                #"step_measure_rtlsim_performance",
-                #"step_out_of_context_synthesis",
-                #"step_synthesize_bitfile",
-                #"step_make_pynq_driver",
-                #"step_deployment_package",
-            ],
-        
-            #steps=[
-            #    "step_tidy_up",
-            #    "step_streamline",
-            #    "step_convert_to_hls",
-            #    "step_create_dataflow_partition",
-            #    "step_target_fps_parallelization",
-            #    "step_apply_folding_config",
-            #    "step_generate_estimate_reports",
-            #]
+            default_swg_exception=True,
+            specialize_layers_config_file="specialize_layers_config/%s_specialize_layers.json"
+            % model_name,
         )
         model_file = "models/%s.onnx" % model_name
         # launch FINN compiler to build
