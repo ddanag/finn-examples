@@ -40,7 +40,6 @@ from qonnx.transformation.general import (
     RemoveUnusedTensors,
     GiveUniqueParameterTensors,
     RemoveStaticGraphInputs,
-    ApplyConfig,
 )
 
 from finn.transformation.streamline.absorb import (
@@ -111,6 +110,7 @@ from finn.transformation.fpgadataflow.set_fifo_depths import (
 )
 from finn.transformation.fpgadataflow.insert_dwc import InsertDWC
 from finn.transformation.fpgadataflow.insert_fifo import InsertFIFO
+from finn.transformation.general import ApplyConfig
 
 
 def step_r2p1d_tidy(model: ModelWrapper, cfg: DataflowBuildConfig):
@@ -209,21 +209,21 @@ def step_r2p1d_convert_to_hw(model: ModelWrapper, cfg: DataflowBuildConfig):
     model = model.transform(InferDataTypes())
     model = model.transform(SortGraph())
 
-    to_hls_transformations = [
-        to_hls.InferAddStreamsLayer,
+    to_hw_transformations = [
+        to_hw.InferAddStreamsLayer,
         LowerConvsToMatMul,
-        to_hls.InferChannelwiseLinearLayer,
-        to_hls.InferPool_Batch,
+        to_hw.InferChannelwiseLinearLayer,
+        to_hw.InferPool, 
         AbsorbTransposeIntoMultiThreshold,
         RoundAndClipThresholds,
-        to_hls.InferQuantizedMatrixVectorActivation,
-        to_hls.InferThresholdingLayer,
+        to_hw.InferQuantizedMatrixVectorActivation,
+        to_hw.InferThresholdingLayer,
         AbsorbConsecutiveTransposes,
-        to_hls.InferConvInpGen,
-        to_hls.InferDuplicateStreamsLayer,
-        to_hls.InferLabelSelectLayer,
+        to_hw.InferConvInpGen,
+        to_hw.InferDuplicateStreamsLayer,
+        to_hw.InferLabelSelectLayer,
     ]
-    for trn in to_hls_transformations:
+    for trn in to_hw_transformations:
         model = model.transform(trn())
         model = model.transform(InferDataLayouts())
         model = model.transform(GiveUniqueNodeNames())

@@ -32,7 +32,8 @@
 #REPO_URL=https://github.com/Xilinx/finn
 REPO_URL=https://github.com/ddanag/finn.git
 # commit hash for repo
-REPO_COMMIT=274785308d563cf2c8d899023b3b098cf430f4bf
+#REPO_COMMIT=274785308d563cf2c8d899023b3b098cf430f4bf #original
+REPO_COMMIT=b90da85c881d1e3fb74108f6f49fcc38b7e08bcb
 # directory (under the same folder as this script) to clone to
 REPO_DIR=finn
 
